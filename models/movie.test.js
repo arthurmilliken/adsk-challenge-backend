@@ -11,17 +11,24 @@ describe('MyMovie', () => {
   describe('addComment()', () => {
     test.todo('correctly adds comment');
     test.todo('correctly logs action');
+    test.todo('returns this');
   });
 
-  describe('rate()', () => {
+  describe('setRating()', () => {
     test.todo('correctly sets property');
     test.todo('correctly logs action');
+    test.todo('validates input');
+    test.todo('returns this');
   });
 
   describe('setWatched()', () => {
     test.todo('correctly sets property');
     test.todo('correctly logs action');
+    test.todo('validates input');
+    test.todo('returns this');
   });
+
+  test.todo('allows method chaining');
 });
 
 describe('MyMovieListing', () => {
@@ -39,12 +46,19 @@ describe('MyMovieList', () => {
   });
 
   describe('add()', () => {
-    test.todo('returns false if movie has already been added');
+    test.todo('returns true');
+    test.todo('returns false');
     test.todo('calls OmdbAPI.findTitleById() with approprate params');
+    test.todo('returns false if movie cannot be found');
     test.todo('correctly constructs MyMovie object with OMDB result');
     test.todo('correctly adds MyMovie object to movies');
     test.todo('correctly logs action');
   });
+
+  describe('get()', () => {
+    test.todo('correctly retrieves MyMovie from MyMovieList.movies');
+    test.todo('returns null when movie is not found');
+  })
 
   describe('remove()', () => {
     test.todo('correctly removes movie from movies and returns true');

@@ -17,6 +17,11 @@ class MyMovie {
     this.Comments = props.Comments ? props.Comments : [];
   }
 
+  /**
+   * add a comment to MyMovie
+   * @param text the text of the comment to add.
+   * @returns `this` to allow chaining.
+   */
   addComment(text) {
     const comment = {
       TimeStamp: (new Date()).toISOString(),
@@ -24,17 +29,32 @@ class MyMovie {
     };
     this.Comments.push(comment);
     const json = JSON.stringify(comment);
-    logger.info(`MyMovie:${OmdbTitle.imdbID}:ADD_COMMENT:${json}`);
+    logger.info(`MyMovie:${this.OmdbTitle.imdbID}:ADD_COMMENT:${json}`);
+    return this;
   }
 
-  rate(rating) {
+  /**
+   * add rating to MyMovie
+   * @param {Number} rating a number from 1 to 10.
+   * @returns `this` to allow chaining.
+   */
+  setRating(rating) {
+    // TODO: validate input.
     this.Rating = rating;
-    logger.info(`MyMovie:${OmdbTitle.imdbID}:RATE:${rating}`);
+    logger.info(`MyMovie:${this.OmdbTitle.imdbID}:RATE:${rating}`);
+    return this;
   }
 
+  /**
+   * set watched flag on MyMovie
+   * @param {boolean} watched true if user has seen the movie.
+   * @returns `this` to allow chaining.
+   */
   setWatched(watched) {
+    // TODO: validate input.
     this.Watched = watched;
-    logger.info(`MyMovie:${OmdbTitle.imdbID}:SET_WATCHED:${watched}`);
+    logger.info(`MyMovie:${this.OmdbTitle.imdbID}:SET_WATCHED:${watched}`);
+    return this;
   }
 }
 
@@ -59,7 +79,7 @@ class MyMovieListing extends OmdbTitle {
     this.Comments = myMovie.Comments;
     // Must clone Ratings so that merging user rating into Ratings does not
     // mutate the underlying OmdbTitle object.
-    this.Ratings = omdbMovie.Ratings.slice();
+    this.Ratings = omdbTitle.Ratings.slice();
     if (myMovie.Rating) {
       this.Ratings.push({
         Source: 'MYSELF',
@@ -80,16 +100,29 @@ class MyMovieList {
   /**
    * add movie to list by imdbID
    * @param imdbID
-   * @returns true if successfully added, false if already present.
+   * @returns true if successfully added, false otherwise.
    */
   async add(imdbID) {
     if (this.movies.has(imdbID)) {
       return false;
     }
     const omdbTitle = await OmdbAPI.findTitleById(imdbID);
+    if (!omdbTitle) {
+      return false;
+    }
     const movie = new MyMovie({ OmdbTitle: omdbTitle });
     this.movies.set(imdbID, movie);
     logger.info(`MyMovieList:ADD:${imdbID}`);
+    return true;
+  }
+
+  /**
+   * retrieve MyMovie from movies
+   * @param imdbID
+   * @returns {MyMovie}
+   */
+  get(imdbID) {
+    return this.movies.get(imdbID);
   }
 
   /**
@@ -123,7 +156,7 @@ class MyMovieList {
    */
   getList(sort, watched, rating) {
     const movies = Array.from(this.movies.values()).map(m => {
-      new MyMovieListing(m)
+      return new MyMovieListing(m);
     });
     // TODO: apply sort
     // TODO: apply watched filter

@@ -82,9 +82,7 @@ describe('OmdbAPI', () => {
         apiKey, i: imdbID, plot: 'full'
       };
 
-      const spy = jest
-      .spyOn(OmdbAPI, 'callOmdb')
-      .mockImplementation(() => {
+      const spy = jest.spyOn(OmdbAPI, 'callOmdb').mockImplementation(() => {
         return omdbMovie;
       });
 
@@ -113,9 +111,7 @@ describe('OmdbAPI', () => {
       const year = 2011;
       const page = 2;
 
-      const spy = jest
-      .spyOn(OmdbAPI, 'callOmdb')
-      .mockImplementation(() => {
+      const spy = jest.spyOn(OmdbAPI, 'callOmdb').mockImplementation(() => {
         return omdbSearch;
       });
 

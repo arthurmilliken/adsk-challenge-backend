@@ -1,5 +1,6 @@
-const logger = require('../logger');
-const { OmdbAPI } = require('../models/omdb');
+const logger = require('../../logger');
+const { OmdbAPI } = require('../../models/omdb');
+const { SERVER_ERROR } = require('./httpStatus');
 
 const router = require('express').Router();
 
@@ -21,7 +22,7 @@ router.get('/omdb', async (req, res) => {
   }
   catch (err) {
     logger.error(err);
-    res.status(err.code || 500).json(err.toString());
+    res.status(err.code || SERVER_ERROR).json(err.toString());
   }
 });
 
@@ -33,13 +34,15 @@ router.get('/omdb', async (req, res) => {
  */
 router.get('/omdb/:imdbID', async (req, res) => {
   try {
+    const imdbID = req.params.imdbID;
     const result = await OmdbAPI.findTitleById(imdbID);
     res.json(result);
   }
   catch (err) {
     logger.error(err);
-    res.status(err.code || 500).json(err.toString());
+    res.status(err.code || SERVER_ERROR).json(err.toString());
   }
 });
+
 
 module.exports = router;
