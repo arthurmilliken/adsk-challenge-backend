@@ -112,13 +112,6 @@ describe('OmdbAPI', () => {
       const type = 'movie';
       const year = 2011;
       const page = 2;
-      const params = {
-        apiKey,
-        s: searchText,
-        type,
-        y: year,
-        page
-      };
 
       const spy = jest
       .spyOn(OmdbAPI, 'callOmdb')
@@ -129,7 +122,13 @@ describe('OmdbAPI', () => {
       OmdbAPI.search(searchText, type, year, page);
       expect(spy.mock.calls.length).toBe(1);
       expect(spy.mock.calls[0].length).toBe(1);
-      expect(spy.mock.calls[0][0]).toEqual(params);
+      expect(spy.mock.calls[0][0]).toEqual({
+        apiKey,
+        s: searchText,
+        type,
+        y: year,
+        page
+      });
       spy.mockRestore();
     });
   });
