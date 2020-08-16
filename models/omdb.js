@@ -71,7 +71,7 @@ class OmdbError extends Error {
    * @param response the axios reponse object.
    */
   constructor(response) {
-    const errMsg = response.data.Error || response.statusText;
+    const errMsg = (response.data || {}).Error || response.statusText;
     super(errMsg);
     // error.code = HTTP response status code (404, 401, 500, etc).
     //              this can be 200 in some cases (invalid query parameters,
@@ -156,6 +156,7 @@ class OmdbAPI {
 
 module.exports = {
   OmdbAPI,
+  OmdbError,
   OmdbTitle,
   OmdbSearchListing,
   OmdbSearchResult,

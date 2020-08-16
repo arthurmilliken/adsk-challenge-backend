@@ -20,7 +20,7 @@ To run a brief demo of OMDB and MyMovieList models, execute:
 
 ---
 
-## ROUTES:
+### ROUTES:
 
 **/api/omdb**
 
@@ -39,7 +39,13 @@ To run a brief demo of OMDB and MyMovieList models, execute:
 
   - GET: find movie by ID
   - POST { comment, rating, watched }: add user data to movie
+  - DELETE: remove movie from list.
 
 **/**
 
   - GET: display this README
+
+### Application Logging
+
+- DEBUG level messages are logged to the console
+- INFO level messages are logged to /logs/combined.log

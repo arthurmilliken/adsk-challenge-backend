@@ -1,5 +1,5 @@
 const logger = require('../../logger');
-const { MyMovieList } = require('../../models/movie');
+const { MyMovieList, MyMovie } = require('../../models/movie');
 const {
   CREATED,
   NO_CONTENT,
@@ -52,12 +52,11 @@ router.route('/myMovieList')
   }
 });
 
-router.route('/myMovieList/:imdbID')
 /**
- * GET /myMovieList/:imdbID
- * fetch MyMovie from myMovieList by ID
- * @see require('../models/movie').MyMovie
+ * /myMovieList:imdbID
  */
+router.route('/myMovieList/:imdbID')
+/** GET: fetch MyMovie from myMovieList by ID */
 .get((req, res) => {
   try {
     const imdbID = req.params.imdbID;
@@ -76,9 +75,9 @@ router.route('/myMovieList/:imdbID')
   }
 })
 /**
- * POST /myMovieList/:imdbID
- * modify state of movie in myMovieList
+ * POST: modify state of movie in myMovieList
  * body {json}: { comment, rating, watched }
+ * @see MyMovie
  */
 .post((req, res) => {
   try {
@@ -101,6 +100,23 @@ router.route('/myMovieList/:imdbID')
       myMovie.setWatched(watched);
     }
     res.json(myMovie);
+  }
+  catch (err) {
+    logger.error(err);
+    res.status(err.code || SERVER_ERROR).json(err.toString());
+  }
+})
+/** DELETE: remove movie from myMovieList */
+.delete((req, res) => {
+  try {
+    const imdbID = req.params.imdbID;
+    const myMovieList = res.app.locals.myMovieList;
+    if (myMovieList.remove(imdbID)) {
+      res.sendStatus(NO_CONTENT);
+    }
+    else {
+      res.sendStatus(NOT_FOUND);
+    }
   }
   catch (err) {
     logger.error(err);

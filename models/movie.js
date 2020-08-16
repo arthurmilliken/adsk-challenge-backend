@@ -28,8 +28,7 @@ class MyMovie {
       Text: text,
     };
     this.Comments.push(comment);
-    const json = JSON.stringify(comment);
-    logger.info(`MyMovie:${this.OmdbTitle.imdbID}:ADD_COMMENT:${json}`);
+    logger.info(`MyMovie:${this.OmdbTitle.imdbID}:ADD_COMMENT:${text}`);
     return this;
   }
 
@@ -41,7 +40,7 @@ class MyMovie {
   setRating(rating) {
     // TODO: validate input.
     this.Rating = rating;
-    logger.info(`MyMovie:${this.OmdbTitle.imdbID}:RATE:${rating}`);
+    logger.info(`MyMovie:${this.OmdbTitle.imdbID}:SET_RATING:${rating}`);
     return this;
   }
 

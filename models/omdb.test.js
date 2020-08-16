@@ -10,6 +10,7 @@ const imdbID = omdbMovie.imdbID;
 
 const {
   OmdbAPI,
+  OmdbError,
   OmdbSearchResult,
   OmdbTitle,
   omdbUrl
@@ -131,7 +132,28 @@ describe('OmdbAPI', () => {
 });
 
 describe('OmdbError', () => {
-  test.todo('takes response.data.Error as its message');
-  test.todo('takes response.statusText when response.data.Error is missing');
-  test.todo('takes response.status as code');
+  const response = {
+    status: 404,
+    statusText: 'Not Found',
+    data: {
+      Response: 'False',
+      Error: 'Movie not found!'
+    }
+  };
+
+  test('takes response.data.Error as its message', () => {
+    const err = new OmdbError(response);
+    expect(err.message).toBe(response.data.Error);
+  });
+
+  test('takes response.status as code', () => {
+    const err = new OmdbError(response);
+    expect(err.code).toBe(response.status);
+  });
+
+  test('takes response.statusText when response.data.Error is missing', () => {
+    const noData = { status: 500, statusText: 'Server Error' }
+    const err = new OmdbError(noData);
+    expect(err.message).toBe(noData.statusText);
+  });
 });
