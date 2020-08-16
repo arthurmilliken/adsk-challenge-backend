@@ -1,26 +1,35 @@
 # Autodesk Code Challenge - ExpressJS Backend
 
-**How to install/run on port 5000:**
+**HOW TO INSTALL/RUN ON PORT 5000:**
 
 - install NodeJS v14 and npm v6
 - `npm install -g yarn`
 - `git clone https://github.com/arthurmilliken/adsk-challenge.git`
 - `cd adsk-challenge`
 - `yarn`
-- update .env.example with the appropriate values and save as .env
+- update `.env.example` with your OMDB API KEY and save as `.env`
 - `yarn start`
-
-To run unit tests:
-
-  `yarn test`
 
 To run a brief demo of OMDB and MyMovieList models, execute:
 
   `yarn run demo`
 
 ---
+### TESTING
+**To run unit tests:**
 
+  `yarn test`
+
+NOTE: most unit tests are stubbed due to time constraints. However, a
+full-realized example of unit testing with properly mocked components can be
+found here: `/models/omdb.test.js`
+
+---
 ### ROUTES:
+
+**/** _(application root)_
+
+  - GET: display this README
 
 **/api/omdb**
 
@@ -41,11 +50,8 @@ To run a brief demo of OMDB and MyMovieList models, execute:
   - POST { comment, rating, watched }: add user data to movie
   - DELETE: remove movie from list.
 
-**/**
-
-  - GET: display this README
-
-### Application Logging
+---
+### APPLICATION LOGGING
 
 - DEBUG level messages are logged to the console
 - INFO level messages are logged to /logs/combined.log

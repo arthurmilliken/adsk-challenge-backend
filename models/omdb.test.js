@@ -1,6 +1,6 @@
 require('dotenv').config();
-const MockAdapter = require('axios-mock-adapter');
 const proxyquire = require('proxyquire');
+const MockAdapter = require('axios-mock-adapter');
 
 const mock = new MockAdapter(require('axios'));
 const apiKey = process.env.OMDB_API_KEY;
