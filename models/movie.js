@@ -1,4 +1,5 @@
-const { OmdbTitle } = require('./omdb');
+const { OmdbAPI, OmdbTitle } = require('./omdb');
+const logger = require('../logger');
 
 /**
  * represents a movie the user saved to MyMovieList. It is composed
@@ -17,21 +18,23 @@ class MyMovie {
   }
 
   addComment(text) {
-    // TODO: log action.
-    this.Comments.push({
+    const comment = {
       TimeStamp: (new Date()).toISOString(),
       Text: text,
-    });
+    };
+    this.Comments.push(comment);
+    const json = JSON.stringify(comment);
+    logger.info(`MyMovie:${OmdbTitle.imdbID}:ADD_COMMENT:${json}`);
   }
 
   rate(rating) {
-    // TODO: log action.
     this.Rating = rating;
+    logger.info(`MyMovie:${OmdbTitle.imdbID}:RATE:${rating}`);
   }
 
   setWatched(watched) {
-    // TODO: log action.
     this.Watched = watched;
+    logger.info(`MyMovie:${OmdbTitle.imdbID}:SET_WATCHED:${watched}`);
   }
 }
 
@@ -45,12 +48,11 @@ class MyMovieListing extends OmdbTitle {
   // create confusion among developers. However, maintaining a list of 20
   // movie properties in two separate places violates DRY principle and comes
   // with its own risks. Because this class is supposed to represent an
-  // immutable, single-use object, the risk of using inheritance is somewhat
-  // mitigated.
+  // immutable, single-use object, the risk of using inheritance is mitigated.
   constructor(myMovie) {
-    const omdbMovie = myMovie.OmdbTitle;
+    const omdbTitle = myMovie.OmdbTitle;
     // Populate OmdbTitle properties.
-    super(omdbMovie);
+    super(omdbTitle);
 
     // Populate MyMovie properties.
     this.Watched = myMovie.Watched;
@@ -75,19 +77,38 @@ class MyMovieList {
     this.movies = new Map();
   }
 
-  add(movie) {
-    // TODO: log action.
-    const id = movie.imdbID;
-    this.movies.set(id, movie);
+  /**
+   * add movie to list by imdbID
+   * @param imdbID
+   * @returns true if successfully added, false if already present.
+   */
+  async add(imdbID) {
+    if (this.movies.has(imdbID)) {
+      return false;
+    }
+    const omdbTitle = await OmdbAPI.findTitleById(imdbID);
+    const movie = new MyMovie({ OmdbTitle: omdbTitle });
+    this.movies.set(imdbID, movie);
+    logger.info(`MyMovieList:ADD:${imdbID}`);
   }
 
-  remove(id) {
+  /**
+   * remove movie from list by imdbID
+   * @param imdbID
+   * @returs true if succesfully removed.
+   */
+  remove(imdbID) {
     // TODO: log action.
-    return this.movies.delete(id);
+    const result = this.movies.delete(imdbID);
+    logger.info(`MyMovieList:REMOVE:${imdbID}`);
+    return result;
   }
 
-  has(id) {
-    return this.movies.has(id);
+  /**
+   * check to see if the movie corresponding to imdbID is already in the list.
+   */
+  has(imdbID) {
+    return this.movies.has(imdbID);
   }
 
   /**

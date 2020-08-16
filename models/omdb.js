@@ -8,6 +8,9 @@ const apiKey = process.env.OMDB_API_KEY;
  * represents a single title returned from OMDB
  */
 class OmdbTitle {
+  // NOTE: in this and other classes based on OMDB data structures, I have
+  //       chosen to replicate the capitalization scheme of the original rather
+  //       than attempt to "correct" any inconsistencies.
   constructor(props) {
     // TODO: make properties immutable to prevent bugs when merging this data
     // with user-provided data.
@@ -136,7 +139,8 @@ class OmdbAPI {
       apiKey,
       s: searchText,
       type,
-      y: year
+      y: year,
+      page
     });
     if (data === null) {
       return [];

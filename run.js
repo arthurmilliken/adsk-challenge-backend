@@ -1,4 +1,5 @@
 require('dotenv').config();
+const logger = require('./logger');
 const { OmdbAPI } = require('./models/omdb');
 
 (async () => {
@@ -20,6 +21,7 @@ const { OmdbAPI } = require('./models/omdb');
     console.log(`OmdbAPI.findTitleById('${imdbID}')`)
     result = await OmdbAPI.findTitleById(imdbID);
     console.log(result);
+    console.log('-------------------------');
   } catch (err) {
     console.error(err);
   }
