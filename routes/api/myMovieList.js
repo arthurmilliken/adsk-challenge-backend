@@ -39,7 +39,7 @@ router.route('/myMovieList')
       const imdbID = req.body.imdbID;
       const myMovieList = res.app.locals.myMovieList;
       if (myMovieList.has(imdbID)) {
-        res.sendStatus(httpStats.NO_CONTENT);
+        res.sendStatus(NO_CONTENT);
       }
       else {
         const result = await myMovieList.add(imdbID);
