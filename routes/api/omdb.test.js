@@ -9,7 +9,7 @@ describe('/omdb', () => {
 });
 
 describe('/omdb/:imdbID', () => {
-  test.todo('calls OMDBAPI.findTitleById() with appropriate params');
+  test.todo('calls OmdbAPI.findTitleById() with appropriate params');
   test.todo('calls res.json with OmdbTitle');
   test.todo('correctly renders error when OmdbAPI.findTitleById() fails.');
   test.todo('write more tests for HTTP failure cases');
